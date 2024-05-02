@@ -21,19 +21,17 @@ Follow these steps to set up the project on your local machine:
 vbnet
 
 git clone https://github.com/d0nda/To-Do-Hub.git
-cd To-Do-Hub
+    cd To-Do-Hub
 
 2. Install dependencies
 
 Navigate to the project directory and install the required dependencies:
 
-npm install
+    npm install
 
 3. Start the Expo development server
 
-sql
-
-npm start
+   npm start
 
 This will start the Expo development server and open a new tab in your default web browser.
 4. Run the app on Android
