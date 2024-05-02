@@ -1,4 +1,3 @@
-//screens/AddTodoScreen.js
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView, KeyboardAvoidingView, Platform, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -10,7 +9,6 @@ const AddToDoScreen = ({ route }) => {
   const { todo } = route.params || {};
   const navigation = useNavigation();
 
-  // Initialize the 10tap editor
   const editor = useEditorBridge({
     autofocus: true,
     avoidIosKeyboard: true,
@@ -21,8 +19,7 @@ const AddToDoScreen = ({ route }) => {
  
   useEffect(() => {
     if (todo) {
-      // Set initial content of the editor to the text of the todo
-      console.log("Todo Text:", todo.text);
+      //console.log("Todo Text:", todo.text);
       editor.setContent(todo.text);
     }
   }, [todo]);
