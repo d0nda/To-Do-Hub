@@ -18,9 +18,8 @@ Installation
 Follow these steps to set up the project on your local machine:
 1. Clone the repository
 
-vbnet
-
 git clone https://github.com/d0nda/To-Do-Hub.git
+
     cd To-Do-Hub
 
 2. Install dependencies
@@ -29,7 +28,7 @@ Navigate to the project directory and install the required dependencies:
 
     npm install
 
-3. Start the Expo development server
+3. Start the Expo development server:
 
    npm start
 
