@@ -1,2 +1,2 @@
 # To-Do-Hub
-A ReactNative Expo To Do Mobile App (Android)
+Mobile To Do App (Android supported for now)
