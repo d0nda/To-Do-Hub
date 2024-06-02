@@ -21,10 +21,19 @@
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "package": "com.todohub",
+      "permissions": [
+        "INTERNET"
+      ],
+      "config": {
+        "usesCleartextTraffic": true
       }
     },
-    "web": {
-      "favicon": "./src/assets/favicon.png"
+    "extra": {
+      "eas": {
+        "projectId": "8c5506b1-84df-4350-8753-81f230f9defb"
+      }
     }
   }
 }

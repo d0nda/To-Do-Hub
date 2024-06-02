@@ -8,9 +8,10 @@ import { useNavigation } from '@react-navigation/native';
 const TodoScreen = ({ route }) => {
   const [todos, setTodos] = useState([]);
   const navigation = useNavigation();
-  const { newTodo } = route.params || {};
+  const { newTodo } = route.params || {}; // Extract newTodo from params
 
   useEffect(() => {
+    // Retrieve todos from AsyncStorage when the component mounts
     retrieveTodos();
   }, []);
 
@@ -63,8 +64,8 @@ const TodoScreen = ({ route }) => {
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => navigation.navigate('AddToDoScreen', { todo: item })}>
             <TodoItem 
-              title={item.text.substring(0, 9)}
-              date={new Date(item.createdAt).toLocaleDateString('en-GB')}
+              title={item.text.substring(0, 13)} // Get first 5-6 characters as title
+              date={new Date(item.createdAt).toLocaleDateString('en-GB')} // Format date as DD/MM/YYYY
               text={item.text}
               onDelete={() => deleteTodo(item.id)} 
             />
