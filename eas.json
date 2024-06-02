@@ -1,0 +1,31 @@
+{
+  "cli": {
+    "version": ">= 9.1.0"
+  },
+  "build": {
+    "local": {
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "local2": {
+      "android": {
+        "gradleCommand": ":app:assembleRelease"
+      }
+    },
+    "local3": {
+      "developmentClient": true
+    },
+    "local4": {
+      "distribution": "internal"
+    },
+    "production": {
+      "android": {
+        "buildType": "app-bundle"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}
