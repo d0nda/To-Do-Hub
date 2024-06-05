@@ -1,0 +1,13 @@
+# Expo
+.expo
+__generated__
+web-build
+bare-apps
+
+.idea
+
+.vscode
+
+# Node
+node_modules
+npm-debug.log
