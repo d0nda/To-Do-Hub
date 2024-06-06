@@ -67,6 +67,7 @@ const AddToDoScreen = ({ route }) => {
 const styles = StyleSheet.create({
   fullScreen: {
     flex: 1,
+    //padding: 6,
   },
   keyboardAvoidingView: {
     position: 'absolute',
