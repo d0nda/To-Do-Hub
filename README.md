@@ -48,12 +48,18 @@ This will start the Expo development server and open a new tab in your default w
 Usage
 
 You should now have the To-Do-Hub app running locally on your machine. Explore the app, create tasks, mark them as completed, and organize your to-do lists. Enjoy the simplicity and productivity that To-Do-Hub offers!
+
+
 Contributing
 
 If you'd like to contribute to this project, feel free to fork the repository and submit a pull request with your changes.
+
+
 License
 
 This project is licensed under the MIT License.
+
+
 Support
 
 If you encounter any issues or have any questions, please open an issue on GitHub.
