@@ -5,8 +5,11 @@ React Native Expo Android App
 Mobile
 ![Mobile Screenshot](./src/assets/feature-screens.png "Mobile Screens")
 
-Welcome to To-Do-Hub, a simple yet powerful to-do list mobile application built with React Native Expo! This repository contains the source code for the To-Do-Hub app. Follow this guide to set up the project on your local machine.
+Welcome to To-Do-Hub, a simple yet powerful to-do list mobile application built with React Native Expo! 
+This repository contains the source code for the To-Do-Hub app. Follow this guide to set up the project on your local machine.
 Prerequisites
+
+to download the app on your android here is the link: https://play.google.com/store/apps/details?id=com.todohub
 
 Before you begin, ensure you have the following installed on your system:
 
@@ -33,7 +36,7 @@ Navigate to the project directory and install the required dependencies:
 
 3. Start the Expo development server:
 
-   `npm start`
+        npm start
 
 This will start the Expo development server and open a new tab in your default web browser.
 4. Run the app on Android
