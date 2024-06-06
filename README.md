@@ -33,7 +33,7 @@ Navigate to the project directory and install the required dependencies:
 
 3. Start the Expo development server:
 
-        npm start
+   `npm start`
 
 This will start the Expo development server and open a new tab in your default web browser.
 4. Run the app on Android
