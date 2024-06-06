@@ -1,6 +1,9 @@
 # To-Do-Hub
 React Native Expo Android App
-Introduction
+
+### Screenshot
+Mobile
+![Mobile Screenshot](./src/assets/feature-screens.png "Mobile Screens")
 
 Welcome to To-Do-Hub, a simple yet powerful to-do list mobile application built with React Native Expo! This repository contains the source code for the To-Do-Hub app. Follow this guide to set up the project on your local machine.
 Prerequisites
