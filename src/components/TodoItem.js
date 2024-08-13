@@ -1,9 +1,10 @@
+//components/TodoItem.js
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const TodoItem = ({ title, date, text, onDelete }) => {
-  const color = 'blue'; 
+  const color = 'green'; 
 
   // Function to extract truncated text
   const getTruncatedText = (text, maxLength) => {
