@@ -1,4 +1,3 @@
-//App.js
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -14,12 +13,19 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <StatusBar style="light" backgroundColor="#6a51ae" translucent={false} />
-      <Stack.Navigator>
+      <StatusBar style="dark" backgroundColor="purple" />
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: '#ffffff',
+          },
+          headerTintColor: '#000000',
+        }}
+      >
         <Stack.Screen 
           name="TodoScreen" 
           component={TodoScreen} 
-          options={{ title: 'To-Do Hub' }} 
+          options={{ title: 'TO-DO-HUB' }} 
         />
         <Stack.Screen 
           name="AddToDoScreen" 

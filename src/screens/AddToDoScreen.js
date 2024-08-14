@@ -1,83 +1,113 @@
-//screens/AddToDoScreen.js
 import React, { useState, useEffect, useCallback } from 'react';
-import { SafeAreaView, KeyboardAvoidingView, Platform, StyleSheet, TouchableOpacity } from 'react-native';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { SafeAreaView, KeyboardAvoidingView, Platform, StyleSheet, TouchableOpacity, View, Text } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { RichText, Toolbar, useEditorBridge } from '@10play/tentap-editor';
+import { TextInput, Button } from 'react-native-paper';
+
+const CATEGORIES = [
+  { id: '1', name: 'Self-care List' },
+  { id: '2', name: 'Daily To-do\'s' },
+  { id: '3', name: 'Workout List' },
+  { id: '4', name: 'Expenditure List' },
+];
 
 const AddToDoScreen = ({ route }) => {
   const [text, setText] = useState('');
+  const [categoryId, setCategoryId] = useState('');
   const { todo } = route.params || {};
   const navigation = useNavigation();
 
-  // Initialize the 10tap editor
-  const editor = useEditorBridge({
-    autofocus: true,
-    avoidIosKeyboard: true,
-    initialContent: todo ? todo.text : '',
-  });
-
   useEffect(() => {
     if (todo) {
-      // Set initial content of the editor to the text of the todo
-      console.log("Todo Text:", todo.text);
-      editor.setContent(todo.text);
+      setText(todo.text);
+      setCategoryId(todo.categoryId);
     }
-  }, [todo, editor]);
+  }, [todo]);
 
   const addTodo = useCallback(() => {
-    editor.getText().then((content) => {
-      if (content.trim() !== '') {
-        if (todo) {
-          const updatedTodo = { ...todo, text: content };
-          navigation.navigate('TodoScreen', { newTodo: updatedTodo });
-        } else {
-          const newTodo = { id: Date.now().toString(), text: content, createdAt: new Date().toISOString() };
-          navigation.navigate('TodoScreen', { newTodo }); 
-        }
-        setText('');
-      }
-    });
-  }, [editor, navigation, todo]);
+    if (text.trim() !== '' && categoryId) {
+      const newTodo = todo
+        ? { ...todo, text, categoryId }
+        : { 
+            id: Date.now().toString(), 
+            text, 
+            categoryId, 
+            createdAt: new Date().toISOString(),
+            completed: false
+          };
+      navigation.navigate('TodoScreen', { newTodo });
+      setText('');
+      setCategoryId('');
+    }
+  }, [text, categoryId, navigation, todo]);
 
-  useFocusEffect(
-    useCallback(() => {
-      navigation.setOptions({
-        headerRight: () => (
-          <TouchableOpacity style={styles.addButton} onPress={addTodo}>
-            <Icon name="plus" size={20} color="white" />
-          </TouchableOpacity>
-        ),
-      });
-    }, [navigation, addTodo])
-  );
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity style={styles.addButton} onPress={addTodo}>
+          <Icon name="check" size={20} color="white" />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation, addTodo]);
 
   return (
-    <SafeAreaView style={styles.fullScreen}>
-      <RichText editor={editor} />
+    <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardAvoidingView}
       >
-        <Toolbar editor={editor} />
+        <TextInput
+          style={styles.input}
+          placeholder="Enter your todo"
+          value={text}
+          onChangeText={setText}
+          multiline
+        />
+        <View style={styles.categoryContainer}>
+          <Text style={styles.categoryTitle}>Select Category:</Text>
+          {CATEGORIES.map((category) => (
+            <Button
+              key={category.id}
+              mode={categoryId === category.id ? 'contained' : 'outlined'}
+              onPress={() => setCategoryId(category.id)}
+              style={styles.categoryButton}
+            >
+              {category.name}
+            </Button>
+          ))}
+        </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  fullScreen: {
+  container: {
     flex: 1,
-    //padding: 6,
+    backgroundColor: '#ffffff',
+    padding: 20,
   },
   keyboardAvoidingView: {
-    position: 'absolute',
-    width: '100%',
-    bottom: 0,
+    flex: 1,
+  },
+  input: {
+    marginBottom: 20,
+  },
+  categoryContainer: {
+    marginBottom: 20,
+  },
+  categoryTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  categoryButton: {
+    marginBottom: 10,
   },
   addButton: {
     marginRight: 10,
-    backgroundColor: 'blue',
+    backgroundColor: '#007AFF',
     width: 40,
     height: 40,
     borderRadius: 20,

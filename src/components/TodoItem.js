@@ -1,64 +1,64 @@
-//components/TodoItem.js
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { Checkbox } from 'react-native-paper';
 
-const TodoItem = ({ title, date, text, onDelete }) => {
-  const color = 'green'; 
-
-  // Function to extract truncated text
-  const getTruncatedText = (text, maxLength) => {
-    if (text.length <= maxLength) {
-      return text;
-    }
-    return text.substring(0, 25, maxLength) + '...';
-  };
-  
-
+const TodoItem = ({ title, date, completed, onToggleCompletion, onDelete, onPress }) => {
   return (
-    <View style={[styles.container, { backgroundColor: color }]}>
-      <Text style={styles.title}>{title}</Text>
-      <View style={styles.contentContainer}>
-      <Text style={styles.date}>{date}</Text>
-      <Text style={styles.truncatedText}>{getTruncatedText(text)}</Text>
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.container}>
+        <View style={styles.leftContainer}>
+          <Checkbox
+            status={completed ? 'checked' : 'unchecked'}
+            onPress={onToggleCompletion}
+          />
+          <View style={styles.textContainer}>
+            <Text style={[
+              styles.title,
+              completed && styles.completedText
+            ]}>
+              {title}
+            </Text>
+            <Text style={styles.date}>{date}</Text>
+          </View>
+        </View>
+        <TouchableOpacity onPress={onDelete} style={styles.deleteButton}>
+          <Icon name="trash" size={20} color="#888" />
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={onDelete} style={styles.deleteButton}>
-        <Icon name="trash" size={25} color="white" />
-      </TouchableOpacity>
-    </View>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 25,
-    paddingHorizontal: 10,
-    marginVertical: 5,
-    borderRadius: 5,
-    backgroundColor: 'blue',
-  },
-  contentContainer: {
     flexDirection: 'row',
-    marginBottom: 5,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+  },
+  leftContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  textContainer: {
+    marginLeft: 10,
   },
   title: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
-    color: '#ffff',
-    marginBottom: 5,
+  },
+  completedText: {
+    textDecorationLine: 'line-through',
+    color: '#888',
   },
   date: {
-    color: '#ffff',
-    marginBottom: 5,
-    marginRight: 15,
-  },
-  truncatedText: {
-    color: '#ffff',
+    fontSize: 12,
+    color: '#888',
   },
   deleteButton: {
-    position: 'absolute',
-    top: 35,
-    right: 10,
+    padding: 5,
   },
 });
 

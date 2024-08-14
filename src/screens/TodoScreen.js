@@ -1,4 +1,3 @@
-//screens/TodoScreen.js
 import React, { useState, useEffect } from 'react';
 import { View, FlatList, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -6,13 +5,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import TodoItem from '../components/TodoItem';
 import { useNavigation } from '@react-navigation/native';
 
+const CATEGORIES = [
+  { id: '1', name: 'Self-care List', color: '#E6F3FF' },
+  { id: '2', name: 'Daily To-do\'s', color: '#FFF5E6' },
+  { id: '3', name: 'Workout List', color: '#E6FFE6' },
+  { id: '4', name: 'Expenditure List', color: '#FFE6E6' },
+];
+
 const TodoScreen = ({ route }) => {
   const [todos, setTodos] = useState([]);
   const navigation = useNavigation();
-  const { newTodo } = route.params || {}; // Extract newTodo from params
+  const { newTodo } = route.params || {};
 
   useEffect(() => {
-    // Retrieve todos from AsyncStorage when the component mounts
     retrieveTodos();
   }, []);
 
@@ -36,15 +41,26 @@ const TodoScreen = ({ route }) => {
 
   const updateOrAddTodo = async (todo) => {
     try {
-      const isExistingTodo = todos.some((t) => t.id === todo.id);
-      const updatedTodos = isExistingTodo
-        ? todos.map((t) => (t.id === todo.id ? todo : t))
-        : [...todos, todo];
+      const updatedTodos = todos.some((t) => t.id === todo.id)
+        ? todos.map((t) => (t.id === todo.id ? { ...t, ...todo } : t))
+        : [...todos, { ...todo, completed: false }];
 
       setTodos(updatedTodos);
       await AsyncStorage.setItem('todos', JSON.stringify(updatedTodos));
     } catch (error) {
       console.error('Error updating or adding todo:', error);
+    }
+  };
+
+  const toggleTodoCompletion = async (id) => {
+    try {
+      const updatedTodos = todos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      );
+      setTodos(updatedTodos);
+      await AsyncStorage.setItem('todos', JSON.stringify(updatedTodos));
+    } catch (error) {
+      console.error('Error toggling todo completion:', error);
     }
   };
 
@@ -58,23 +74,38 @@ const TodoScreen = ({ route }) => {
     }
   };
 
+  const renderCategory = ({ item: category }) => {
+    const categoryTodos = todos.filter(todo => todo.categoryId === category.id);
+    
+    if (categoryTodos.length === 0) return null;
+
+    return (
+      <View style={[styles.categoryContainer, { backgroundColor: category.color }]}>
+        <Text style={styles.categoryTitle}>{category.name}</Text>
+        {categoryTodos.map(todo => (
+          <TodoItem
+            key={todo.id}
+            title={todo.text}
+            date={new Date(todo.createdAt).toLocaleDateString('en-GB')}
+            completed={todo.completed}
+            onToggleCompletion={() => toggleTodoCompletion(todo.id)}
+            onDelete={() => deleteTodo(todo.id)}
+            onPress={() => navigation.navigate('AddToDoScreen', { todo })}
+          />
+        ))}
+      </View>
+    );
+  };
+
   return (
     <View style={styles.container}>
-      <FlatList
-        data={todos}
-        renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => navigation.navigate('AddToDoScreen', { todo: item })}>
-            <TodoItem 
-              title={item.text.substring(0, 13)} // Get first 5-6 characters as title
-              date={new Date(item.createdAt).toLocaleDateString('en-GB')} // Format date as DD/MM/YYYY
-              text={item.text}
-              onDelete={() => deleteTodo(item.id)} 
-            />
-          </TouchableOpacity>
-        )}
-        keyExtractor={(item) => item.id}
-      />
-      {todos.length === 0 && (
+      {todos.length > 0 ? (
+        <FlatList
+          data={CATEGORIES}
+          renderItem={renderCategory}
+          keyExtractor={item => item.id}
+        />
+      ) : (
         <View style={styles.imageContainer}>
           <Image source={require('../assets/To_do_empty.png')} style={styles.image} />
           <Text style={styles.boldText}>Create your first To Do</Text>
@@ -83,10 +114,11 @@ const TodoScreen = ({ route }) => {
           </TouchableOpacity>
         </View>
       )}
-
-      {/* Plus button in navigation header */}
       {todos.length > 0 && (
-        <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('AddToDoScreen')}>
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={() => navigation.navigate('AddToDoScreen')}
+        >
           <Icon name="plus" size={24} color="white" />
         </TouchableOpacity>
       )}
@@ -100,6 +132,16 @@ const styles = StyleSheet.create({
     padding: 20,
     justifyContent: 'flex-end',
   },
+  categoryContainer: {
+    marginBottom: 20,
+    borderRadius: 10,
+    padding: 10,
+  },
+  categoryTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
   imageContainer: {
     flex: 20,
     justifyContent: 'center',
@@ -112,28 +154,31 @@ const styles = StyleSheet.create({
   },
   boldText: {
     fontWeight: 'bold',
+    fontSize: 18,
+    marginTop: 20,
+    marginBottom: 20,
   },
   addToButton: {
-    marginTop: 20,
-    backgroundColor: 'blue',
-    padding: 10,
+    backgroundColor: '#007AFF',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
     borderRadius: 5,
   },
   addToButtonText: {
     color: 'white',
     fontWeight: 'bold',
-    textAlign: 'center',
   },
   addButton: {
     position: 'absolute',
     bottom: 20,
     right: 20,
-    backgroundColor: 'blue',
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    backgroundColor: '#007AFF',
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
+    elevation: 5,
   },
 });
 
