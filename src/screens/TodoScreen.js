@@ -99,28 +99,34 @@ const TodoScreen = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      {todos.length > 0 ? (
-        <FlatList
-          data={CATEGORIES}
-          renderItem={renderCategory}
-          keyExtractor={item => item.id}
-        />
-      ) : (
+      {todos.length === 0 ? (
         <View style={styles.imageContainer}>
-          <Image source={require('../assets/To_do_empty.png')} style={styles.image} />
+          <Image
+            source={require("../assets/To_do_empty.png")}
+            style={styles.image}
+          />
           <Text style={styles.boldText}>Create your first To Do</Text>
-          <TouchableOpacity style={styles.addToButton} onPress={() => navigation.navigate('AddToDoScreen')}>
+          <TouchableOpacity
+            style={styles.addToButton}
+            onPress={() => navigation.navigate("AddToDoScreen")}
+          >
             <Text style={styles.addToButtonText}>Add To Do</Text>
           </TouchableOpacity>
         </View>
-      )}
-      {todos.length > 0 && (
-        <TouchableOpacity
-          style={styles.addButton}
-          onPress={() => navigation.navigate('AddToDoScreen')}
-        >
-          <Icon name="plus" size={24} color="white" />
-        </TouchableOpacity>
+      ) : (
+        <>
+          <FlatList
+            data={CATEGORIES}
+            renderItem={renderCategory}
+            keyExtractor={(item) => item.id}
+          />
+          <TouchableOpacity
+            style={styles.addButton}
+            onPress={() => navigation.navigate("AddToDoScreen")}
+          >
+            <Icon name="plus" size={24} color="white" />
+          </TouchableOpacity>
+        </>
       )}
     </View>
   );
